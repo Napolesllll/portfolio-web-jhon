@@ -1,0 +1,187 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+   url      = env("DATABASE_URL")
+}
+
+// ============================================
+// MODELOS DE AUTENTICACIÓN
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // Para credentials login
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relaciones
+  posts         Post[]
+  accounts      Account[]
+  sessions      Session[]
+  
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// ============================================
+// MODELOS DEL BLOG
+// ============================================
+
+model Post {
+  id           String    @id @default(cuid())
+  title        String
+  slug         String    @unique
+  excerpt      String?   @db.Text
+  content      String    @db.Text // HTML del editor TipTap
+  coverImage   String?
+  published    Boolean   @default(false)
+  views        Int       @default(0)
+  readingTime  Int       @default(5) // en minutos
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  publishedAt  DateTime?
+
+  // Relaciones
+  author       User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     String
+  category     Category  @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  tags         Tag[]     @relation("PostTags")
+  reactions    Reaction[]
+
+  @@index([slug])
+  @@index([published])
+  @@index([authorId])
+  @@index([categoryId])
+  @@map("posts")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  color       String   @default("#3b82f6") // Color hex para la UI
+  createdAt   DateTime @default(now())
+
+  // Relaciones
+  posts       Post[]
+
+  @@map("categories")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  // Relaciones
+  posts     Post[]   @relation("PostTags")
+
+  @@map("tags")
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  type      ReactionType
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([postId])
+  @@map("reactions")
+}
+
+enum ReactionType {
+  FIRE      // 🔥 Útil
+  LIGHTBULB // 💡 Inspirador
+  THINKING  // 🤔 Interesante
+}
+
+// ============================================
+// MODELOS DEL PORTFOLIO
+// ============================================
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  content     String   @db.Text // Caso de estudio completo
+  coverImage  String
+  images      String[] // URLs de imágenes adicionales
+  stack       String[] // ["Next.js", "Prisma", "PostgreSQL"]
+  liveUrl     String?
+  githubUrl   String?
+  featured    Boolean  @default(false)
+  status      ProjectStatus @default(COMPLETED)
+  order       Int      @default(0) // Para ordenar proyectos destacados
+  metrics     Json?    // { users: 1000, performance: "95%" }
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([featured])
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}

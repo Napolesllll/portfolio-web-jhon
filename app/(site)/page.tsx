@@ -60,7 +60,7 @@ export default function Home() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-20 flex flex-wrap justify-center gap-4"
         >
-          {["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma"].map(
+          {["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Node.js", "PostgreSQL"].map(
             (tech) => (
               <div
                 key={tech}

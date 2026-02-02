@@ -9,6 +9,10 @@ import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 
+type NavbarProps = {
+  children: React.ReactNode;
+};
+
 const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/blog", label: "Blog" },
@@ -16,7 +20,7 @@ const navLinks = [
   { href: "/about", label: "Sobre mí" },
 ];
 
-export function Navbar() {
+export function Navbar({ children }: NavbarProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const { scrollY } = useScroll();
@@ -93,12 +97,11 @@ export function Navbar() {
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden items-center gap-2 md:flex">
-            <ThemeToggle />
-            <Button asChild size="sm">
-              <Link href="/contact">Contacto</Link>
-            </Button>
-          </div>
+          {/* Desktop Actions */}
+<div className="hidden items-center gap-2 md:flex">
+  <ThemeToggle />
+  {children}
+</div>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 md:hidden">
