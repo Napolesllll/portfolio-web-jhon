@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { CommandMenu } from "@/components/layout/command-menu";
+import { SplashScreen } from "@/components/ui/splash-screen";
 import "./globals.css";
 
 // Inter para texto general
@@ -112,6 +113,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <SplashScreen />
           <ToastProvider />
           <CommandMenu />
           {children}
