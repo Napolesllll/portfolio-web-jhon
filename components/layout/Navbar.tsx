@@ -146,7 +146,7 @@ export function Navbar({ children }: NavbarProps) {
           mobileMenuOpen ? "block" : "hidden"
         )}
       >
-        <nav className="container mx-auto flex flex-col gap-4 px-4 py-8">
+        <nav className="container mx-auto flex flex-col items-center gap-4 px-4 py-8">
           {navLinks.map((link, index) => (
             <motion.div
               key={link.href}
@@ -176,6 +176,16 @@ export function Navbar({ children }: NavbarProps) {
             <Button asChild className="w-full">
               <Link href="/contact">Contacto</Link>
             </Button>
+          </motion.div>
+
+          {/* Auth buttons en móvil */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: (navLinks.length + 1) * 0.1 }}
+            className="mt-4 flex w-full flex-col items-center gap-2 border-t border-border pt-4"
+          >
+            {children}
           </motion.div>
         </nav>
       </motion.div>
