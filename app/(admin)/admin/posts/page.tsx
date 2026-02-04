@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { Plus, Pencil, Trash2, Eye } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, FileText } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { formatDate, formatNumber } from "@/lib/utils";
@@ -32,7 +32,19 @@ export default function AdminPostsPage() {
 }
 
 async function PostsList() {
-  const posts = await prisma.post.findMany({
+  type Post = {
+    id: string;
+    title: string;
+    excerpt: string | null;
+    createdAt: Date;
+    published: boolean;
+    views: number;
+    category: { name: string; color: string };
+    author: { name: string | null };
+    _count: { reactions: number };
+  };
+
+  const posts: Post[] = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },
     include: {
       category: true,
@@ -107,11 +119,10 @@ async function PostsList() {
               </td>
               <td className="hidden px-6 py-4 md:table-cell">
                 <span
-                  className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
-                    post.published
+                  className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${post.published
                       ? "bg-green-500/10 text-green-500"
                       : "bg-yellow-500/10 text-yellow-500"
-                  }`}
+                    }`}
                 >
                   {post.published ? "Publicado" : "Borrador"}
                 </span>
@@ -162,8 +173,4 @@ function PostsLoading() {
       </div>
     </div>
   );
-}
-
-function FileText({ className }: { className?: string }) {
-  return <FileText className={className} />;
 }

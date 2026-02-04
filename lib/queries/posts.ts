@@ -42,12 +42,12 @@ export const getAllPosts = cache(async () => {
 /**
  * Obtener post por slug
  */
-export const getPostBySlug = cache(async (slug: string) => {
+export async function getPostBySlug(slug: string) {
   if (!slug) {
     return null;
   }
 
-  return await prisma.post.findUnique({
+  const post = await prisma.post.findUnique({
     where: { slug },
     include: {
       author: {
@@ -79,7 +79,11 @@ export const getPostBySlug = cache(async (slug: string) => {
       },
     },
   });
-});
+
+  return post;
+}
+
+export const getPostBySlugCached = cache(getPostBySlug);
 
 /**
  * Obtener posts relacionados (por categoría)

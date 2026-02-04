@@ -205,11 +205,22 @@ export function PostForm({ post, categories, tags }: PostFormProps) {
             </select>
           </div>
 
-          {/* Tags (simple por ahora) */}
+          {/* Tags */}
           <div className="rounded-lg border border-border bg-background-secondary p-6">
             <h3 className="mb-4 font-semibold">Tags</h3>
-            <p className="text-sm text-foreground-secondary">
-              La gestión de tags se agregará en la próxima actualización
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <button
+                  key={tag.id}
+                  type="button"
+                  className="rounded-lg border border-border bg-background px-3 py-1 text-sm transition-smooth hover:border-primary hover:bg-primary/10"
+                >
+                  #{tag.name}
+                </button>
+              ))}
+            </div>
+            <p className="mt-4 text-xs text-foreground-tertiary">
+              Sistema de tags mejorado próximamente
             </p>
           </div>
         </div>

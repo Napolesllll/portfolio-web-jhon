@@ -64,19 +64,18 @@ export default async function ProjectPage({ params }: Props) {
             </span>
           )}
           <span
-            className={`rounded-full px-3 py-1 text-sm font-medium ${
-              project.status === "COMPLETED"
+            className={`rounded-full px-3 py-1 text-sm font-medium ${project.status === "COMPLETED"
                 ? "bg-green-500/10 text-green-500"
                 : project.status === "IN_PROGRESS"
-                ? "bg-yellow-500/10 text-yellow-500"
-                : "bg-gray-500/10 text-gray-500"
-            }`}
+                  ? "bg-yellow-500/10 text-yellow-500"
+                  : "bg-gray-500/10 text-gray-500"
+              }`}
           >
             {project.status === "COMPLETED"
               ? "🟢 Completado"
               : project.status === "IN_PROGRESS"
-              ? "🟡 En desarrollo"
-              : "⚫ Archivado"}
+                ? "🟡 En desarrollo"
+                : "⚫ Archivado"}
           </span>
         </div>
 
@@ -134,7 +133,7 @@ export default async function ProjectPage({ params }: Props) {
           Stack Tecnológico
         </h2>
         <div className="flex flex-wrap gap-3">
-          {project.stack.map((tech) => (
+          {project.stack.map((tech: string) => (
             <span
               key={tech}
               className="rounded-lg bg-background-secondary px-4 py-2 font-medium"
@@ -183,7 +182,7 @@ export default async function ProjectPage({ params }: Props) {
             Proyectos relacionados
           </h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedProjects.map((relatedProject, index) => (
+            {relatedProjects.map((relatedProject: typeof relatedProjects[0], index: number) => (
               <ProjectCard
                 key={relatedProject.id}
                 project={relatedProject}

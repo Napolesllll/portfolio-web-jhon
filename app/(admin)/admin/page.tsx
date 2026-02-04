@@ -95,7 +95,17 @@ async function Stats() {
 }
 
 async function RecentPosts() {
-  const posts = await prisma.post.findMany({
+  type Post = {
+    id: string;
+    title: string;
+    createdAt: Date;
+    published: boolean;
+    views: number;
+    category: { name: string };
+    author: { name: string | null };
+  };
+
+  const posts: Post[] = await prisma.post.findMany({
     take: 5,
     orderBy: { createdAt: "desc" },
     include: {
@@ -120,11 +130,10 @@ async function RecentPosts() {
             </div>
             <div className="flex items-center gap-4 text-sm text-foreground-tertiary">
               <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${
-                  post.published
+                className={`rounded-full px-3 py-1 text-xs font-medium ${post.published
                     ? "bg-green-500/10 text-green-500"
                     : "bg-yellow-500/10 text-yellow-500"
-                }`}
+                  }`}
               >
                 {post.published ? "Publicado" : "Borrador"}
               </span>

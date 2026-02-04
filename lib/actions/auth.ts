@@ -29,8 +29,10 @@ export async function register(formData: FormData) {
   });
 
   if (!validatedFields.success) {
+    const fieldErrors = validatedFields.error.flatten().fieldErrors;
+    const firstError = Object.values(fieldErrors).flat()[0] || "Error de validación";
     return {
-      error: validatedFields.error.errors[0].message,
+      error: firstError,
     };
   }
 
@@ -78,8 +80,10 @@ export async function login(formData: FormData) {
   });
 
   if (!validatedFields.success) {
+    const fieldErrors = validatedFields.error.flatten().fieldErrors;
+    const firstError = Object.values(fieldErrors).flat()[0] || "Error de validación";
     return {
-      error: validatedFields.error.errors[0].message,
+      error: firstError,
     };
   }
 

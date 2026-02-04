@@ -52,12 +52,14 @@ export const getRelatedProjects = cache(
  * Obtener todas las tecnologías únicas
  */
 export const getAllTechnologies = cache(async () => {
-  const projects = await prisma.project.findMany({
+  type ProjectStack = { stack: string[] };
+  
+  const projects: ProjectStack[] = await prisma.project.findMany({
     select: { stack: true },
   });
 
-  const allTech = projects.flatMap((p) => p.stack);
-  const uniqueTech = Array.from(new Set(allTech)).sort();
+  const allTech: string[] = projects.flatMap((p) => p.stack);
+  const uniqueTech: string[] = Array.from(new Set(allTech)).sort();
 
   return uniqueTech;
 });

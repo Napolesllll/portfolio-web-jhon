@@ -4,8 +4,16 @@ import { getAllProjects } from "@/lib/queries/projects";
 import { Button } from "@/components/ui/button";
 import { DeleteProjectButton } from "@/components/admin/delete-project-button";
 
+type Project = {
+    id: string;
+    title: string;
+    slug: string;
+    status: string;
+    featured: boolean;
+};
+
 export default async function ProjectsPage() {
-    const projects = await getAllProjects();
+    const projects: Project[] = await getAllProjects();
 
     return (
         <div className="space-y-6">
@@ -37,10 +45,10 @@ export default async function ProjectsPage() {
                                 <td className="px-6 py-4 text-sm text-foreground-secondary">{project.slug}</td>
                                 <td className="px-6 py-4 text-sm">
                                     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${project.status === "COMPLETED"
-                                            ? "bg-green-100 text-green-800"
-                                            : project.status === "IN_PROGRESS"
-                                                ? "bg-yellow-100 text-yellow-800"
-                                                : "bg-gray-100 text-gray-800"
+                                        ? "bg-green-100 text-green-800"
+                                        : project.status === "IN_PROGRESS"
+                                            ? "bg-yellow-100 text-yellow-800"
+                                            : "bg-gray-100 text-gray-800"
                                         }`}>
                                         {project.status === "COMPLETED"
                                             ? "Completado"

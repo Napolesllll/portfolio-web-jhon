@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, Eye, ArrowLeft } from "lucide-react";
-import { getPostBySlug, getRelatedPosts, incrementPostViews } from "@/lib/queries/posts";
+import { getPostBySlugCached, getRelatedPosts, incrementPostViews } from "@/lib/queries/posts";
 import { getReactionCounts } from "@/lib/actions/reactions";
 import { formatDate, formatNumber } from "@/lib/utils";
 import { CategoryBadge } from "@/components/blog/category-badge";
@@ -12,6 +12,7 @@ import { PostReactions } from "@/components/blog/post-reactions";
 import { ReadingProgress } from "@/components/blog/reading-progress";
 import { PostCard } from "@/components/blog/post-card";
 import { Button } from "@/components/ui/button";
+import { StructuredData } from "@/components/seo/structured-data";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -20,7 +21,7 @@ type Props = {
 // Generar metadata dinámica
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getPostBySlugCached(slug);
 
   if (!post) {
     return {
@@ -44,7 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getPostBySlugCached(slug);
+
+  type Post = NonNullable<typeof post>;
 
   if (!post || !post.published) {
     notFound();
@@ -59,8 +62,36 @@ export default async function PostPage({ params }: Props) {
   // Obtener posts relacionados
   const relatedPosts = await getRelatedPosts(post.id, post.categoryId);
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt || "",
+    image: post.coverImage || "",
+    datePublished: post.publishedAt?.toISOString(),
+    dateModified: post.updatedAt.toISOString(),
+    author: {
+      "@type": "Person",
+      name: post.author.name || "Jhon Cano",
+      url: "https://jhoncano.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Jhon Cano",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://jhoncano.com/logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://jhoncano.com/blog/${post.slug}`,
+    },
+  };
+
   return (
     <>
+      <StructuredData data={structuredData} />
       <ReadingProgress />
       <article className="container mx-auto max-w-4xl px-4 py-12">
         {/* Back button */}
@@ -157,7 +188,7 @@ export default async function PostPage({ params }: Props) {
               Tags
             </h3>
             <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
+              {post.tags.map((tag: typeof post.tags[0]) => (
                 <TagBadge key={tag.id} tag={tag} />
               ))}
             </div>
@@ -179,7 +210,7 @@ export default async function PostPage({ params }: Props) {
               Artículos relacionados
             </h2>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedPosts.map((relatedPost) => (
+              {relatedPosts.map((relatedPost: typeof relatedPosts[0]) => (
                 <PostCard key={relatedPost.id} post={relatedPost} />
               ))}
             </div>

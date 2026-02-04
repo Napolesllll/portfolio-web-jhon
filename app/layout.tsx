@@ -20,23 +20,35 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://jhoncano.com"),
   title: {
     default: "Jhon Cano | Full Stack Developer",
     template: "%s | Jhon Cano",
   },
   description:
-    "Full Stack Developer especializado en crear aplicaciones web modernas y escalables. De Medellín para el mundo.",
+    "Full Stack Developer especializado en crear aplicaciones web modernas y escalables. React, Next.js, TypeScript. De Medellín para el mundo.",
   keywords: [
     "Jhon Cano",
     "Full Stack Developer",
     "React",
     "Next.js",
     "TypeScript",
+    "Tailwind CSS",
+    "Prisma",
+    "PostgreSQL",
     "Medellín",
     "Colombia",
+    "Desarrollo Web",
+    "Web Developer",
   ],
   authors: [{ name: "Jhon Cano", url: "https://jhoncano.com" }],
   creator: "Jhon Cano",
+  publisher: "Jhon Cano",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     type: "website",
     locale: "es_CO",
@@ -44,12 +56,21 @@ export const metadata: Metadata = {
     title: "Jhon Cano | Full Stack Developer",
     description: "Construyendo experiencias web extraordinarias",
     siteName: "Jhon Cano Portfolio",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Jhon Cano - Full Stack Developer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Jhon Cano | Full Stack Developer",
     description: "Construyendo experiencias web extraordinarias",
     creator: "@jhoncano",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -61,6 +82,15 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
+  },
+  alternates: {
+    canonical: "https://jhoncano.com",
+    types: {
+      "application/rss+xml": "https://jhoncano.com/feed.xml",
+    },
+  },
+  verification: {
+    google: "tu-codigo-de-verificacion",
   },
 };
 

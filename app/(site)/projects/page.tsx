@@ -21,7 +21,7 @@ export default async function ProjectsPage({
 
   // Filtrar por tecnología si hay query param
   const filteredProjects = params.tech
-    ? projects.filter((p) => p.stack.includes(params.tech!))
+    ? projects.filter((p: typeof projects[0]) => p.stack.includes(params.tech!))
     : projects;
 
   return (
@@ -50,7 +50,7 @@ export default async function ProjectsPage({
               </p>
             </div>
           ) : (
-            filteredProjects.map((project, index) => (
+            filteredProjects.map((project: typeof filteredProjects[0], index: number) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))
           )}
