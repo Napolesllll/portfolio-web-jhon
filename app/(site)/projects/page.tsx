@@ -13,14 +13,15 @@ export const metadata: Metadata = {
 export default async function ProjectsPage({
   searchParams,
 }: {
-  searchParams: { tech?: string };
+  searchParams: Promise<{ tech?: string }>;
 }) {
   const projects = await getAllProjects();
   const technologies = await getAllTechnologies();
+  const params = await searchParams;
 
   // Filtrar por tecnología si hay query param
-  const filteredProjects = searchParams.tech
-    ? projects.filter((p) => p.stack.includes(searchParams.tech!))
+  const filteredProjects = params.tech
+    ? projects.filter((p) => p.stack.includes(params.tech!))
     : projects;
 
   return (
@@ -37,7 +38,7 @@ export default async function ProjectsPage({
       </div>
 
       {/* Filter */}
-      <ProjectsFilter technologies={technologies} activeTech={searchParams.tech} />
+      <ProjectsFilter technologies={technologies} activeTech={params.tech} />
 
       {/* Projects Grid */}
       <Suspense fallback={<ProjectsLoading />}>

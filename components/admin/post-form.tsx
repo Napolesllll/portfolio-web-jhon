@@ -2,9 +2,10 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Eye } from "lucide-react";
+import { ArrowLeft, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TiptapEditor } from "./tiptap-editor";
+import { PublishWithConfetti } from "./confetti-button";
 import { createPost, updatePost } from "@/lib/actions/posts";
 import Link from "next/link";
 
@@ -93,15 +94,7 @@ export function PostForm({ post, categories, tags }: PostFormProps) {
             <Save className="mr-2 h-4 w-4" />
             Guardar Borrador
           </Button>
-          <Button
-            type="submit"
-            name="published"
-            value="true"
-            disabled={isPending}
-          >
-            <Eye className="mr-2 h-4 w-4" />
-            Publicar
-          </Button>
+          <PublishWithConfetti disabled={isPending} />
         </div>
       </div>
 

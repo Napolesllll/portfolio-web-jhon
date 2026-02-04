@@ -98,10 +98,16 @@ export function Navbar({ children }: NavbarProps) {
 
           {/* Desktop Actions */}
           {/* Desktop Actions */}
-<div className="hidden items-center gap-2 md:flex">
-  <ThemeToggle />
-  {children}
-</div>
+          <div className="hidden items-center gap-4 md:flex">
+            <div className="hidden items-center gap-2 text-sm text-foreground-tertiary lg:flex">
+              <kbd className="rounded border border-border bg-background-secondary px-2 py-1 text-xs font-mono">
+                ⌘K
+              </kbd>
+              <span className="text-xs">para búsqueda rápida</span>
+            </div>
+            <ThemeToggle />
+            {children}
+          </div>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 md:hidden">
