@@ -61,7 +61,7 @@ export function SplashScreen() {
             {/* Rotating border */}
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 4, repeat: Infinity, linear: true }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
               className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-transparent to-accent opacity-40"
             />
 
