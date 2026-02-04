@@ -1,27 +1,26 @@
 import { auth } from "@/auth/auth";
-import { NextResponse } from "next/server";
 
 export default auth((req) => {
-  const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
+  const pathname = req.nextUrl.pathname;
 
-  const isAdminRoute = nextUrl.pathname.startsWith("/admin");
-  const isAuthRoute = nextUrl.pathname.startsWith("/login") || 
-                       nextUrl.pathname.startsWith("/register");
-
-  // Redirigir usuarios autenticados lejos de login/register
-  if (isAuthRoute && isLoggedIn) {
-    return NextResponse.redirect(new URL("/", nextUrl));
+  // Solo proteger rutas de admin
+  if (pathname.startsWith("/admin")) {
+    if (!isLoggedIn || req.auth?.user?.role !== "ADMIN") {
+      return Response.redirect(new URL("/login", req.nextUrl));
+    }
   }
 
-  // Proteger rutas de admin
-  if (isAdminRoute && (!isLoggedIn || req.auth?.user?.role !== "ADMIN")) {
-    return NextResponse.redirect(new URL("/login", nextUrl));
+  // Si está en login/register y ya está autenticado, redirigir
+  if ((pathname.startsWith("/login") || pathname.startsWith("/register")) && isLoggedIn) {
+    return Response.redirect(new URL("/", req.nextUrl));
   }
-
-  return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/admin/:path*",
+    "/login",
+    "/register",
+  ],
 };
