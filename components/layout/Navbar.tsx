@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -70,15 +71,13 @@ export function Navbar({ children }: NavbarProps) {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative"
+              className="relative h-24 w-24"
             >
-              <span className="font-display text-2xl font-bold gradient-text">
-                JC
-              </span>
-              <motion.div
-                className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-primary to-accent"
-                whileHover={{ width: "100%" }}
-                transition={{ duration: 0.3 }}
+              <Image
+                src="/images/mylogo.png"
+                alt="Logo"
+                fill
+                className="object-contain"
               />
             </motion.div>
           </Link>

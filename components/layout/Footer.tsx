@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Github, Linkedin, Mail, Twitter } from "lucide-react";
 
 const footerLinks = {
@@ -45,9 +46,14 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="inline-block">
-              <span className="font-display text-2xl font-bold gradient-text">
-                Jhon Cano
-              </span>
+              <div className="relative h-64 w-64">
+                <Image
+                  src="/images/mylogo.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-foreground-secondary">
               Full Stack Developer especializado en crear aplicaciones web
