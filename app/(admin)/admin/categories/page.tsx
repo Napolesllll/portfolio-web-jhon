@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { CategoryForm } from "@/components/admin/category-form";
 import { DeleteCategoryButton } from "@/components/admin/delete-category-button";
 
+export const dynamic = "force-dynamic";
+
 type Category = {
     id: string;
     name: string;

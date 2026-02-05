@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { TagForm } from "@/components/admin/tag-form";
 import { DeleteTagButton } from "@/components/admin/delete-tag-button";
 
+export const dynamic = "force-dynamic";
+
 type Tag = {
     id: string;
     name: string;

@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { Plus, Pencil, Trash2, Eye, FileText } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+
+export const dynamic = "force-dynamic";
 import { formatDate, formatNumber } from "@/lib/utils";
 import { DeletePostButton } from "@/components/admin/delete-post-button";
 
