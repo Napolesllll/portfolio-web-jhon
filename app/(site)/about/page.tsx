@@ -1,9 +1,10 @@
 import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { Github, Linkedin, Mail, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { StructuredData } from "@/components/seo/structured-data";
+import { AboutHero } from "@/components/about/about-hero";
+import { AboutBio } from "@/components/about/about-bio";
+import { AboutJourney } from "@/components/about/about-journey";
+import { AboutSkills } from "@/components/about/about-skills";
+import { AboutContact } from "@/components/about/about-contact";
 
 export const metadata: Metadata = {
     title: "Sobre mí",
@@ -12,10 +13,43 @@ export const metadata: Metadata = {
 };
 
 const skills = [
-    { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
-    { category: "Backend", items: ["Node.js", "Prisma", "PostgreSQL", "REST APIs"] },
-    { category: "Tools", items: ["Git", "Docker", "Vercel", "Figma"] },
-    { category: "Soft Skills", items: ["Comunicación", "Trabajo en equipo", "Resolución de problemas"] },
+    { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS"], color: "from-blue-500 to-cyan-500" },
+    { category: "Backend", items: ["Node.js", "Prisma", "PostgreSQL", "REST APIs"], color: "from-green-500 to-emerald-500" },
+    { category: "Tools", items: ["Git", "Docker", "Vercel", "Figma"], color: "from-purple-500 to-pink-500" },
+    { category: "Soft Skills", items: ["Comunicación", "Trabajo en equipo", "Resolución de problemas"], color: "from-yellow-500 to-orange-500" },
+];
+
+const journey = [
+    {
+        year: "2020",
+        title: "Primeros pasos en programación",
+        description: "Iniciaba mi carrera en desarrollo web con HTML, CSS y JavaScript vanilla.",
+        icon: "🚀",
+    },
+    {
+        year: "2021",
+        title: "React & Frontend mastery",
+        description: "Me especialicé en React y aprendí TypeScript para escribir código más robusto.",
+        icon: "⚛️",
+    },
+    {
+        year: "2022",
+        title: "Full Stack Developer",
+        description: "Profundizé en backend con Node.js, Prisma y bases de datos SQL.",
+        icon: "🔧",
+    },
+    {
+        year: "2023-2024",
+        title: "Next.js & Scale",
+        description: "Dominé Next.js y trabajé en proyectos de escala empresarial.",
+        icon: "📈",
+    },
+    {
+        year: "2025",
+        title: "Innovación & AI",
+        description: "Explorando integraciones con IA y arquitecturas modernas serverless.",
+        icon: "🤖",
+    },
 ];
 
 export default function AboutPage() {
@@ -51,129 +85,27 @@ export default function AboutPage() {
         <>
             <StructuredData data={structuredData} />
 
-            <div className="container mx-auto max-w-4xl px-4 py-12">
-                {/* Header */}
-                <div className="mb-12 text-center">
-                    <h1 className="mb-4 font-display text-4xl font-bold sm:text-5xl">
-                        Sobre mí
-                    </h1>
-                    <p className="mx-auto max-w-2xl text-lg text-foreground-secondary">
-                        Full Stack Developer apasionado por crear experiencias web
-                        extraordinarias
-                    </p>
+            <div className="relative overflow-hidden">
+                {/* Background with animated elements */}
+                <div className="fixed inset-0 -z-10 opacity-30">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-purple-600/10" />
                 </div>
 
-                {/* Bio */}
-                <div className="mb-16 rounded-xl border border-border bg-background-secondary p-8">
-                    <div className="mb-6 flex items-start gap-6">
-                        <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full border-4 border-primary">
-                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary to-accent text-6xl text-white">
-                                JC
-                            </div>
-                        </div>
+                <div className="container mx-auto max-w-6xl px-4 py-12 relative space-y-20">
+                    {/* Hero Section */}
+                    <AboutHero />
 
-                        <div>
-                            <h2 className="mb-2 text-2xl font-bold">Jhon Cano</h2>
-                            <p className="mb-4 text-foreground-secondary">
-                                Full Stack Developer
-                            </p>
-                            <div className="flex items-center gap-2 text-sm text-foreground-tertiary">
-                                <MapPin className="h-4 w-4" />
-                                Medellín, Colombia
-                            </div>
-                        </div>
-                    </div>
+                    {/* Bio Section */}
+                    <AboutBio />
 
-                    <div className="space-y-4 text-foreground-secondary">
-                        <p>
-                            👋 ¡Hola! Soy Jhon, un desarrollador Full Stack de Medellín,
-                            Colombia, especializado en crear aplicaciones web modernas y
-                            escalables.
-                        </p>
-                        <p>
-                            💻 Mi stack principal incluye React, Next.js, TypeScript y
-                            Tailwind CSS en el frontend, con Node.js, Prisma y PostgreSQL en
-                            el backend. Me apasiona crear experiencias de usuario excepcionales
-                            con código limpio y mantenible.
-                        </p>
-                        <p>
-                            🚀 Con experiencia en desarrollo de productos desde cero hasta
-                            producción, me enfoco en escribir código escalable, performante y
-                            fácil de mantener.
-                        </p>
-                        <p>
-                            🌱 Siempre estoy aprendiendo nuevas tecnologías y mejores
-                            prácticas para crear mejores soluciones.
-                        </p>
-                    </div>
-                </div>
+                    {/* Journey Timeline */}
+                    <AboutJourney journey={journey} />
 
-                {/* Skills */}
-                <div className="mb-16">
-                    <h2 className="mb-8 font-display text-3xl font-bold">
-                        Skills & Tecnologías
-                    </h2>
-                    <div className="grid gap-6 sm:grid-cols-2">
-                        {skills.map((skillGroup) => (
-                            <div
-                                key={skillGroup.category}
-                                className="rounded-xl border border-border bg-background-secondary p-6"
-                            >
-                                <h3 className="mb-4 font-semibold text-primary">
-                                    {skillGroup.category}
-                                </h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {skillGroup.items.map((skill) => (
-                                        <span
-                                            key={skill}
-                                            className="rounded-lg bg-background-tertiary px-3 py-1 text-sm"
-                                        >
-                                            {skill}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                    {/* Skills Section */}
+                    <AboutSkills skills={skills} />
 
-                {/* Contact */}
-                <div className="rounded-xl border border-border bg-background-secondary p-8 text-center">
-                    <h2 className="mb-4 font-display text-2xl font-bold">
-                        ¿Trabajamos juntos?
-                    </h2>
-                    <p className="mb-6 text-foreground-secondary">
-                        Estoy abierto a nuevas oportunidades y colaboraciones
-                    </p>
-
-                    <div className="flex flex-wrap justify-center gap-4">
-                        <Button asChild>
-                            <a href="mailto:canojhon148@gmail.com">
-                                <Mail className="mr-2 h-4 w-4" />
-                                Enviar Email
-                            </a>
-                        </Button>
-                        <Button asChild variant="secondary">
-                            <a
-                                href="https://github.com/jhoncano"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <Github className="mr-2 h-4 w-4" />
-                                GitHub
-                            </a>
-                        </Button>
-                        <Button asChild variant="secondary">
-                            <a
-                                href="https://linkedin.com/in/jhoncano"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <Linkedin className="mr-2 h-4 w-4" />
-                                LinkedIn
-                            </a>
-                        </Button>
-                    </div>
+                    {/* Contact Section */}
+                    <AboutContact />
                 </div>
             </div>
         </>

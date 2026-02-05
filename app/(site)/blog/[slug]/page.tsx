@@ -2,17 +2,18 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, Eye, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { getPostBySlugCached, getRelatedPosts, incrementPostViews } from "@/lib/queries/posts";
 import { getReactionCounts } from "@/lib/actions/reactions";
-import { formatDate, formatNumber } from "@/lib/utils";
-import { CategoryBadge } from "@/components/blog/category-badge";
-import { TagBadge } from "@/components/blog/tag-badge";
-import { PostReactions } from "@/components/blog/post-reactions";
-import { ReadingProgress } from "@/components/blog/reading-progress";
-import { PostCard } from "@/components/blog/post-card";
+import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { StructuredData } from "@/components/seo/structured-data";
+import { BlogPostHero } from "@/components/blog/blog-post-hero";
+import { BlogContentWrapper } from "@/components/blog/blog-content-wrapper";
+import { BlogPostTags } from "@/components/blog/blog-post-tags";
+import { BlogRelatedPosts } from "@/components/blog/blog-related-posts";
+import { PostReactions } from "@/components/blog/post-reactions";
+import { ReadingProgress } from "@/components/blog/reading-progress";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -93,129 +94,72 @@ export default async function PostPage({ params }: Props) {
     <>
       <StructuredData data={structuredData} />
       <ReadingProgress />
-      <article className="container mx-auto max-w-4xl px-4 py-12">
-        {/* Back button */}
-        <Button asChild variant="ghost" size="sm" className="mb-8">
-          <Link href="/blog">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Volver al blog
-          </Link>
-        </Button>
 
-        {/* Header */}
-        <header className="mb-8">
-          <div className="mb-4">
-            <CategoryBadge category={post.category} />
+      {/* Header Section with Hero */}
+      <div className="relative overflow-hidden mb-20">
+        {/* Background */}
+        <div className="fixed inset-0 -z-10 bg-gradient-to-br from-slate-950 via-blue-950/20 to-slate-950" />
+
+        {/* Main Container */}
+        <div className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
+          {/* Back Button */}
+          <div className="mb-8">
+            <Button asChild variant="ghost" size="sm" className="group">
+              <Link href="/blog" className="flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                Volver al blog
+              </Link>
+            </Button>
           </div>
 
-          <h1 className="mb-4 font-display text-4xl font-bold sm:text-5xl">
-            {post.title}
-          </h1>
+          {/* Hero Section */}
+          <BlogPostHero
+            title={post.title}
+            excerpt={post.excerpt}
+            coverImage={post.coverImage}
+            category={post.category}
+            author={post.author}
+            publishedAt={post.publishedAt}
+            readingTime={post.readingTime}
+            views={post.views}
+          />
+        </div>
+      </div>
 
-          {post.excerpt && (
-            <p className="mb-6 text-xl text-foreground-secondary">
-              {post.excerpt}
-            </p>
-          )}
+      {/* Cover Image - Full Width */}
+      {post.coverImage && (
+        <div className="relative h-96 sm:h-[500px] overflow-hidden mb-20 -mx-4 sm:mx-0 sm:rounded-2xl">
+          <Image
+            src={post.coverImage}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60" />
+        </div>
+      )}
 
-          {/* Meta */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-foreground-tertiary">
-            {post.author.name && (
-              <div className="flex items-center gap-2">
-                {post.author.image && (
-                  <Image
-                    src={post.author.image}
-                    alt={post.author.name}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                )}
-                <span className="font-medium text-foreground">
-                  {post.author.name}
-                </span>
-              </div>
-            )}
-            {post.publishedAt && (
-              <div className="flex items-center gap-1">
-                <Calendar className="h-4 w-4" />
-                <span>{formatDate(post.publishedAt)}</span>
-              </div>
-            )}
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              <span>{post.readingTime} min de lectura</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Eye className="h-4 w-4" />
-              <span>{formatNumber(post.views)} vistas</span>
-            </div>
-          </div>
-        </header>
-
-        {/* Cover Image */}
-        {post.coverImage && (
-          <div className="relative mb-12 aspect-video overflow-hidden rounded-xl">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        )}
-
+      {/* Main Content */}
+      <article className="container mx-auto max-w-4xl px-4 pb-20">
         {/* Content */}
-        <div
-          className="prose prose-neutral dark:prose-invert max-w-none
-          prose-headings:font-display prose-headings:font-bold
-          prose-h2:mt-12 prose-h2:text-3xl
-          prose-h3:mt-8 prose-h3:text-2xl
-          prose-p:text-foreground-secondary
-          prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-          prose-strong:text-foreground
-          prose-code:rounded prose-code:bg-background-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-code:text-primary
-          prose-pre:bg-background-secondary prose-pre:border prose-pre:border-border
-          prose-img:rounded-xl"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        <BlogContentWrapper>
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        </BlogContentWrapper>
 
         {/* Tags */}
-        {post.tags.length > 0 && (
-          <div className="mt-12 border-t border-border pt-8">
-            <h3 className="mb-4 text-sm font-semibold text-foreground-secondary">
-              Tags
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag: typeof post.tags[0]) => (
-                <TagBadge key={tag.id} tag={tag} />
-              ))}
-            </div>
-          </div>
-        )}
+        <BlogPostTags tags={post.tags} />
 
         {/* Reactions */}
-        <div className="mt-12 border-t border-border pt-8">
-          <h3 className="mb-4 text-lg font-semibold">
+        <div className="mt-16 pt-12 border-t border-white/10">
+          <h3 className="text-2xl font-bold text-white mb-6">
             ¿Qué te pareció este artículo?
           </h3>
           <PostReactions postId={post.id} initialCounts={reactionCounts} />
         </div>
 
         {/* Related Posts */}
-        {relatedPosts.length > 0 && (
-          <div className="mt-16 border-t border-border pt-12">
-            <h2 className="mb-8 font-display text-2xl font-bold">
-              Artículos relacionados
-            </h2>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedPosts.map((relatedPost: typeof relatedPosts[0]) => (
-                <PostCard key={relatedPost.id} post={relatedPost} />
-              ))}
-            </div>
-          </div>
-        )}
+        <BlogRelatedPosts posts={relatedPosts} />
       </article>
       <script
         dangerouslySetInnerHTML={{

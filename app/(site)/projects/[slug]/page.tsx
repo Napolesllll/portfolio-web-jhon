@@ -2,10 +2,14 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { getProjectBySlug, getRelatedProjects } from "@/lib/queries/projects";
 import { Button } from "@/components/ui/button";
-import { ProjectCard } from "@/components/portfolio/project-card";
+import { ProjectHero } from "@/components/portfolio/project-hero";
+import { ProjectMetrics } from "@/components/portfolio/project-metrics";
+import { ProjectTechStack } from "@/components/portfolio/project-tech-stack";
+import { ProjectContentWrapper } from "@/components/portfolio/project-content-wrapper";
+import { ProjectRelatedProjects } from "@/components/portfolio/project-related-projects";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -46,78 +50,38 @@ export default async function ProjectPage({ params }: Props) {
   );
 
   return (
-    <article className="container mx-auto max-w-5xl px-4 py-12">
-      {/* Back button */}
-      <Button asChild variant="ghost" size="sm" className="mb-8">
-        <Link href="/projects">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Volver a proyectos
-        </Link>
-      </Button>
+    <>
+      {/* Header Section with Hero */}
+      <div className="relative overflow-hidden mb-20">
+        {/* Background */}
+        <div className="fixed inset-0 -z-10 bg-gradient-to-br from-slate-950 via-blue-950/20 to-slate-950" />
 
-      {/* Header */}
-      <header className="mb-8">
-        <div className="mb-4 flex flex-wrap items-center gap-4">
-          {project.featured && (
-            <span className="rounded-full bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">
-              Proyecto Destacado
-            </span>
-          )}
-          <span
-            className={`rounded-full px-3 py-1 text-sm font-medium ${project.status === "COMPLETED"
-                ? "bg-green-500/10 text-green-500"
-                : project.status === "IN_PROGRESS"
-                  ? "bg-yellow-500/10 text-yellow-500"
-                  : "bg-gray-500/10 text-gray-500"
-              }`}
-          >
-            {project.status === "COMPLETED"
-              ? "🟢 Completado"
-              : project.status === "IN_PROGRESS"
-                ? "🟡 En desarrollo"
-                : "⚫ Archivado"}
-          </span>
-        </div>
-
-        <h1 className="mb-4 font-display text-4xl font-bold sm:text-5xl">
-          {project.title}
-        </h1>
-
-        <p className="mb-6 text-xl text-foreground-secondary">
-          {project.description}
-        </p>
-
-        {/* Actions */}
-        <div className="flex flex-wrap gap-4">
-          {project.liveUrl && (
-            <Button asChild>
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Ver Demo
-              </a>
+        {/* Main Container */}
+        <div className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
+          {/* Back Button */}
+          <div className="mb-8">
+            <Button asChild variant="ghost" size="sm" className="group">
+              <Link href="/projects" className="flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                Volver a Proyectos
+              </Link>
             </Button>
-          )}
-          {project.githubUrl && (
-            <Button asChild variant="secondary">
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="mr-2 h-4 w-4" />
-                Ver Código
-              </a>
-            </Button>
-          )}
-        </div>
-      </header>
+          </div>
 
-      {/* Cover Image */}
-      <div className="relative mb-12 aspect-video overflow-hidden rounded-xl">
+          {/* Hero Section */}
+          <ProjectHero
+            title={project.title}
+            description={project.description}
+            featured={project.featured}
+            status={project.status}
+            liveUrl={project.liveUrl}
+            githubUrl={project.githubUrl}
+          />
+        </div>
+      </div>
+
+      {/* Cover Image - Full Width */}
+      <div className="relative h-96 sm:h-[500px] overflow-hidden mb-20 -mx-4 sm:mx-0 sm:rounded-2xl">
         <Image
           src={project.coverImage}
           alt={project.title}
@@ -125,73 +89,27 @@ export default async function ProjectPage({ params }: Props) {
           className="object-cover"
           priority
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60" />
       </div>
 
-      {/* Tech Stack */}
-      <div className="mb-12">
-        <h2 className="mb-4 font-display text-2xl font-bold">
-          Stack Tecnológico
-        </h2>
-        <div className="flex flex-wrap gap-3">
-          {project.stack.map((tech: string) => (
-            <span
-              key={tech}
-              className="rounded-lg bg-background-secondary px-4 py-2 font-medium"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-      </div>
+      {/* Main Content */}
+      <article className="container mx-auto max-w-4xl px-4 pb-20 space-y-20">
+        {/* Tech Stack */}
+        <ProjectTechStack stack={project.stack} />
 
-      {/* Metrics */}
-      {project.metrics && typeof project.metrics === "object" && (
-        <div className="mb-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Object.entries(project.metrics as Record<string, string>).map(
-            ([key, value]) => (
-              <div
-                key={key}
-                className="rounded-xl border border-border bg-background-secondary p-6"
-              >
-                <p className="mb-2 text-sm font-medium uppercase text-foreground-secondary">
-                  {key}
-                </p>
-                <p className="text-3xl font-bold">{value}</p>
-              </div>
-            )
-          )}
-        </div>
-      )}
+        {/* Metrics */}
+        <ProjectMetrics metrics={project.metrics as Record<string, string> | undefined} />
 
-      {/* Content */}
-      <div
-        className="prose prose-neutral dark:prose-invert max-w-none
-          prose-headings:font-display prose-headings:font-bold
-          prose-h2:mt-12 prose-h2:text-3xl
-          prose-h3:mt-8 prose-h3:text-2xl
-          prose-p:text-foreground-secondary
-          prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-          prose-img:rounded-xl"
-        dangerouslySetInnerHTML={{ __html: project.content }}
-      />
-
-      {/* Related Projects */}
-      {relatedProjects.length > 0 && (
-        <div className="mt-16 border-t border-border pt-12">
-          <h2 className="mb-8 font-display text-2xl font-bold">
-            Proyectos relacionados
-          </h2>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedProjects.map((relatedProject: typeof relatedProjects[0], index: number) => (
-              <ProjectCard
-                key={relatedProject.id}
-                project={relatedProject}
-                index={index}
-              />
-            ))}
-          </div>
+        {/* Content */}
+        <div>
+          <ProjectContentWrapper>
+            <div dangerouslySetInnerHTML={{ __html: project.content }} />
+          </ProjectContentWrapper>
         </div>
-      )}
-    </article>
+
+        {/* Related Projects */}
+        <ProjectRelatedProjects projects={relatedProjects} />
+      </article>
+    </>
   );
 }
