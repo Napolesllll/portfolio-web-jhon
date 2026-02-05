@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import { getAllPosts } from "@/lib/queries/posts";
 import { PostCard } from "@/components/blog/post-card";
 import { LoadingGrid } from "@/components/blog/loading-grid";
+
+export const dynamic = "force-dynamic";
 import { BlogHeader } from "@/components/blog/blog-header";
 
 export const metadata: Metadata = {

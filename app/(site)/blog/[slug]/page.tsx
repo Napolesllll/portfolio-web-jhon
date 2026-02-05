@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+
+export const dynamic = "force-dynamic";
 import { getPostBySlugCached, getRelatedPosts, incrementPostViews } from "@/lib/queries/posts";
 import { getReactionCounts } from "@/lib/actions/reactions";
 import { formatDate } from "@/lib/utils";
