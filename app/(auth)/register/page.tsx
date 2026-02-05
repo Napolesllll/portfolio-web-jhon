@@ -26,7 +26,7 @@ export default function RegisterPage() {
           {/* Logo section */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
-              Grok
+              Bienvenido
             </h1>
             <p className="text-sm text-gray-300">Crea tu cuenta</p>
           </div>
