@@ -116,8 +116,13 @@ export function Footer() {
                 className="relative h-16 w-16"
               >
                 <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
-                <div className="relative h-full w-full bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                  JC
+                <div className="relative h-full w-full rounded-lg overflow-hidden">
+                  <Image
+                    src="/images/mylogo.png"
+                    alt="Logo"
+                    fill
+                    className="object-contain"
+                  />
                 </div>
               </motion.div>
             </Link>

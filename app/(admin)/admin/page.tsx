@@ -136,8 +136,8 @@ async function RecentPosts() {
             <div className="flex items-center gap-4 text-sm text-foreground-tertiary">
               <span
                 className={`rounded-full px-3 py-1 text-xs font-medium ${post.published
-                    ? "bg-green-500/10 text-green-500"
-                    : "bg-yellow-500/10 text-yellow-500"
+                  ? "bg-green-500/10 text-green-500"
+                  : "bg-yellow-500/10 text-yellow-500"
                   }`}
               >
                 {post.published ? "Publicado" : "Borrador"}
