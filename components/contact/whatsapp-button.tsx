@@ -11,7 +11,7 @@ export function WhatsAppButton() {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            className="fixed bottom-6 mb-10 right-6 z-40 p-4 bg-green-500 hover:bg-green-600 rounded-full shadow-lg text-white transition-colors duration-300"
+            className="fixed bottom-6 mb-18 right-6 z-40 p-4 bg-green-500 hover:bg-green-600 rounded-full shadow-lg text-white transition-colors duration-300"
             aria-label="WhatsApp"
         >
             <MessageCircle className="w-6 h-6" />
