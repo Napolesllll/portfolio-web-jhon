@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Github, Linkedin, Mail, Twitter, ArrowRight, Code2, Sparkles } from "lucide-react";
+import { Github, Mail, Twitter, ArrowRight, Code2, Sparkles, MessageCircle } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 
@@ -24,25 +24,21 @@ const socialLinks = [
     href: "https://github.com/jhoncano",
     icon: Github,
     label: "GitHub",
-    color: "from-gray-600 to-gray-800",
   },
   {
-    href: "https://linkedin.com/in/jhoncano",
-    icon: Linkedin,
-    label: "LinkedIn",
-    color: "from-blue-600 to-blue-800",
+    href: "https://wa.me/573023376544",
+    icon: MessageCircle,
+    label: "WhatsApp",
   },
   {
     href: "https://twitter.com/jhoncano",
     icon: Twitter,
     label: "Twitter",
-    color: "from-cyan-500 to-blue-500",
   },
   {
     href: "mailto:canojhon148@gmail.com",
     icon: Mail,
     label: "Email",
-    color: "from-red-500 to-pink-500",
   },
 ];
 
@@ -136,38 +132,41 @@ export function Footer() {
             </motion.p>
 
             {/* Social Links */}
-            <motion.div variants={itemVariants} className="flex gap-3 flex-wrap">
-              {socialLinks.map((link) => (
-                <motion.a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => setHoveredSocial(link.label)}
-                  onMouseLeave={() => setHoveredSocial(null)}
-                  whileHover={{ scale: 1.2, y: -5 }}
-                  className="group/social relative"
-                  aria-label={link.label}
-                >
-                  <div
-                    className={`absolute -inset-2 bg-gradient-to-r ${link.color} rounded-lg blur opacity-0 group-hover/social:opacity-50 transition-opacity duration-300`}
-                  />
-                  <motion.div
-                    className={`relative p-2 rounded-lg bg-white/5 border border-white/10 group-hover/social:border-white/30 transition-all backdrop-blur-md`}
+            <motion.div variants={itemVariants} className="flex gap-4">
+              {socialLinks.map((link) => {
+                const colorClasses = {
+                  "GitHub": "text-gray-400 hover:text-white hover:bg-gray-500/20",
+                  "WhatsApp": "text-green-400 hover:text-green-300 hover:bg-green-500/20",
+                  "Twitter": "text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20",
+                  "Email": "text-red-400 hover:text-red-300 hover:bg-red-500/20",
+                };
+
+                return (
+                  <motion.a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={() => setHoveredSocial(link.label)}
+                    onMouseLeave={() => setHoveredSocial(null)}
+                    whileHover={{ scale: 1.15, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`p-2.5 rounded-lg border border-white/10 backdrop-blur-md transition-all duration-300 ${colorClasses[link.label as keyof typeof colorClasses] || "text-gray-400 hover:text-white"}`}
+                    aria-label={link.label}
                   >
                     <motion.div
                       animate={
                         hoveredSocial === link.label
-                          ? { rotate: 360, scale: 1.1 }
-                          : { rotate: 0, scale: 1 }
+                          ? { rotate: 360 }
+                          : { rotate: 0 }
                       }
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.6 }}
                     >
-                      <link.icon className={`h-5 w-5 text-transparent bg-gradient-to-r ${link.color} bg-clip-text`} />
+                      <link.icon className="h-5 w-5" />
                     </motion.div>
-                  </motion.div>
-                </motion.a>
-              ))}
+                  </motion.a>
+                );
+              })}
             </motion.div>
           </motion.div>
 

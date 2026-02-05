@@ -5,6 +5,7 @@ import { ContactInfo } from "@/components/contact/contact-info";
 import { ContactAvailability } from "@/components/contact/contact-availability";
 import { ContactCTA } from "@/components/contact/contact-cta";
 import { ContactFormWrapper } from "@/components/contact/contact-form-wrapper";
+import { WhatsAppButton } from "@/components/contact/whatsapp-button";
 
 export const metadata: Metadata = {
     title: "Contacto",
@@ -49,6 +50,9 @@ export default function ContactPage() {
                     </div>
                 </div>
             </div>
+
+            {/* WhatsApp Button */}
+            <WhatsAppButton />
         </div>
     );
 }
