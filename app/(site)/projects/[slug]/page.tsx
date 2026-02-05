@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+
+export const dynamic = "force-dynamic";
 import { getProjectBySlug, getRelatedProjects } from "@/lib/queries/projects";
 import { Button } from "@/components/ui/button";
 import { ProjectHero } from "@/components/portfolio/project-hero";

@@ -4,6 +4,8 @@ import { getAllProjects } from "@/lib/queries/projects";
 import { Button } from "@/components/ui/button";
 import { DeleteProjectButton } from "@/components/admin/delete-project-button";
 
+export const dynamic = "force-dynamic";
+
 type Project = {
     id: string;
     title: string;

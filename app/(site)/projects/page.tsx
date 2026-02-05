@@ -4,6 +4,8 @@ import { getAllProjects, getAllTechnologies } from "@/lib/queries/projects";
 import { ProjectCard } from "@/components/portfolio/project-card";
 import { ProjectsHeader } from "@/components/portfolio/projects-header";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Proyectos",
   description:

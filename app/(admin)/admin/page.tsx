@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { FileText, Eye, Tag, FolderOpen } from "lucide-react";
 import { formatNumber } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminDashboard() {
   return (
     <div>
