@@ -25,14 +25,17 @@ export default function AdminDashboard() {
 }
 
 async function Stats() {
-  const [totalPosts, publishedPosts, totalViews, totalCategories, totalTags] =
+  const [totalPosts, publishedPosts, postViews, projectViews, totalCategories, totalTags] =
     await Promise.all([
       prisma.post.count(),
       prisma.post.count({ where: { published: true } }),
       prisma.post.aggregate({ _sum: { views: true } }),
+      prisma.project.aggregate({ _sum: { views: true } }),
       prisma.category.count(),
       prisma.tag.count(),
     ]);
+
+  const totalViews = (postViews._sum.views || 0) + (projectViews._sum.views || 0);
 
   const stats = [
     {
@@ -51,7 +54,7 @@ async function Stats() {
     },
     {
       name: "Total Vistas",
-      value: formatNumber(totalViews._sum.views || 0),
+      value: formatNumber(totalViews),
       icon: Eye,
       color: "text-purple-500",
       bg: "bg-purple-500/10",

@@ -7,7 +7,11 @@ async function main() {
   console.log("🌱 Iniciando seed...");
 
   // Limpiar datos existentes (solo en desarrollo)
-  await prisma.reaction.deleteMany();
+  try {
+    await prisma.reaction.deleteMany();
+  } catch (e) {
+    // Table might not exist yet
+  }
   await prisma.post.deleteMany();
   await prisma.tag.deleteMany();
   await prisma.category.deleteMany();

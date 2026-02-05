@@ -57,7 +57,7 @@ export function UserMenu({ user }: UserMenuProps) {
             )}
 
             <Link
-              href="/settings"
+              href="/admin/settings"
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-smooth hover:bg-background-tertiary"
             >
               <Settings className="h-4 w-4" />
