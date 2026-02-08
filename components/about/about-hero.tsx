@@ -146,7 +146,7 @@ export function AboutHero() {
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </a>
                     <a
-                        href="mailto:canojhon148@gmail.com"
+                        href="/contact"
                         className="px-8 py-3 rounded-lg border border-cyan-500/50 text-cyan-400 font-semibold hover:bg-cyan-500/10 transition-all hover:shadow-lg hover:shadow-cyan-500/25"
                     >
                         Contactame

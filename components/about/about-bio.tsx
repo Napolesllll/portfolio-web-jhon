@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import { MapPin, Lightbulb, Target, Heart } from "lucide-react";
 
@@ -74,13 +75,14 @@ export function AboutBio() {
                             className="relative"
                         >
                             <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl blur-xl opacity-30" />
-                            <div className="relative aspect-square rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-6xl font-bold text-white overflow-hidden">
-                                <motion.div
-                                    animate={{ scale: [1, 1.1, 1] }}
-                                    transition={{ duration: 3, repeat: Infinity }}
-                                >
-                                    JC
-                                </motion.div>
+                            <div className="relative aspect-[3/4] rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center overflow-hidden">
+                                <Image
+                                    src="/mifoto1.jpeg"
+                                    alt="Jhon Cano"
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                />
                             </div>
                         </motion.div>
 
