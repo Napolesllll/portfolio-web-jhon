@@ -1,14 +1,19 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { sendContactEmail } from "@/lib/actions/contact";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
+import emailjs from "@emailjs/browser";
+
+// Inicializar EmailJS
+if (typeof window !== "undefined") {
+    emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "");
+}
 
 export function ContactForm() {
-    const [isPending, startTransition] = useTransition();
+    const [isPending, setIsPending] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -18,31 +23,56 @@ export function ContactForm() {
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        setIsPending(true);
 
-        startTransition(async () => {
-            const result = await sendContactEmail(formData);
+        // Validaciones
+        if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+            toast.error("Todos los campos son requeridos");
+            setIsPending(false);
+            return;
+        }
 
-            if (result.success) {
-                toast.success("¡Mensaje enviado! Te responderé pronto 🚀");
+        if (formData.message.length < 20) {
+            toast.error("El mensaje debe tener al menos 20 caracteres");
+            setIsPending(false);
+            return;
+        }
 
-                // Confetti celebration
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                });
+        try {
+            await emailjs.send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
+                {
+                    to_email: "canojhon148@gmail.com",
+                    from_name: formData.name,
+                    from_email: formData.email,
+                    subject: formData.subject,
+                    message: formData.message,
+                }
+            );
 
-                // Reset form
-                setFormData({
-                    name: "",
-                    email: "",
-                    subject: "",
-                    message: "",
-                });
-            } else {
-                toast.error(result.error || "Error al enviar el mensaje");
-            }
-        });
+            toast.success("¡Mensaje enviado! Te responderé pronto 🚀");
+
+            // Confetti celebration
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+            });
+
+            // Reset form
+            setFormData({
+                name: "",
+                email: "",
+                subject: "",
+                message: "",
+            });
+        } catch (error) {
+            toast.error("Error al enviar el mensaje. Intenta nuevamente.");
+            console.error("Error sending email:", error);
+        } finally {
+            setIsPending(false);
+        }
     }
 
     return (
