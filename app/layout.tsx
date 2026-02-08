@@ -44,6 +44,11 @@ export const metadata: Metadata = {
   authors: [{ name: "Jhon Cano", url: "https://jhoncano.com" }],
   creator: "Jhon Cano",
   publisher: "Jhon Cano",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/images/mylogo.png",
+  },
   formatDetection: {
     email: false,
     address: false,

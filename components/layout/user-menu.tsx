@@ -40,6 +40,15 @@ export function UserMenu({ user }: UserMenuProps) {
       {/* Dropdown */}
       <div className="absolute right-0 top-full mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
         <div className="glass rounded-lg border border-border p-2 shadow-lg">
+          <div className="flex items-center justify-center border-b border-border px-3 py-3">
+            <Image
+              src="/images/mylogo.png"
+              alt="Logo"
+              width={40}
+              height={40}
+              className="rounded"
+            />
+          </div>
           <div className="border-b border-border px-3 py-2">
             <p className="text-sm font-medium">{user.name}</p>
             <p className="text-xs text-foreground-tertiary">{user.email}</p>
